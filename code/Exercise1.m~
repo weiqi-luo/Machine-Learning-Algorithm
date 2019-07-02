@@ -1,7 +1,6 @@
 function [par] = Exercise1(k)
 %EXCERCISE1 Summary of this function goes here
 %   Detailed explanation goes here
-%% load data and initialization
 max_order = 6;
 load('Data.mat')
 Input = Input.';
@@ -12,7 +11,7 @@ err_orientation_order = zeros(1,max_order);
 for j = 1:max_order
 err_position_fold = zeros(1,k);
 err_orientation_fold = zeros(1,k);
-%% loop over folds
+%%
     for i = 1:k
         %% Split the dataset
         [input_test,output_test,input_train,output_train] = split_dataset(Input,Output,k,i);
