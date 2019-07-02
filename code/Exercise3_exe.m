@@ -11,5 +11,5 @@ cluster_init_all(:,:,3) = init_cluster_x;
 for i = 1:3
 clusters = cluster_init_all(:,:,i);
 dataset = dataset_all(:,:,i);
-Exercise3_kmeans(dataset, clusters, k);
+Exercise3_kmeans(dataset, clusters, 7);
 end
