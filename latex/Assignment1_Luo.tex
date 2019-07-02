@@ -1,4 +1,7 @@
 \documentclass{article}
+\usepackage{geometry}
+\geometry{left=2cm,right=2cm,top=2cm,bottom=2cm}
+
 \usepackage{graphicx}
 \graphicspath{{pics/}}
 
@@ -90,28 +93,28 @@
 	\begin{subfigure}{.5\textwidth}
 		\centering
 		% include first image
-		\includegraphics[width=.8\linewidth]{1.jpg}  
+		\includegraphics[width=1.\linewidth]{1.jpg}  
 		\caption{Simulation (v, w) = (0, 0.05)}
 		\label{fig:sub-first}
 	\end{subfigure}
 	\begin{subfigure}{.5\textwidth}
 		\centering
 		% include second image
-		\includegraphics[width=.8\linewidth]{2.jpg}  
+		\includegraphics[width=1.\linewidth]{2.jpg}  
 		\caption{Simulation (v, w) = (1, 0)}
 		\label{fig:sub-second}
 	\end{subfigure}
 	\begin{subfigure}{.5\textwidth}
 		\centering
 		% include first image
-		\includegraphics[width=.8\linewidth]{1.jpg}  
+		\includegraphics[width=1.\linewidth]{3.jpg}  
 		\caption{Simulation (v, w) = (1, 0.05)}
 		\label{fig:sub-first}
 	\end{subfigure}
 	\begin{subfigure}{.5\textwidth}
 		\centering
 		% include second image
-		\includegraphics[width=.8\linewidth]{2.jpg}  
+		\includegraphics[width=1.\linewidth]{4.jpg}  
 		\caption{Simulation (v, w) = (-1, -0.05)}
 		\label{fig:sub-second}
 	\end{subfigure}
@@ -120,8 +123,34 @@
 \end{figure}
 \newpage
 \section*{Exercise 2}
+(1) The optimized number of principal components and respective classification error:
+\begin{center}
+	\begin{tabular}{ l | c }
+		\hline
+		$d_{opt}$ & $err_{min}$ \\ \hline		
+		$48$ & $3.620\%$ \\ \hline
+	\end{tabular}
+\end{center}
+(2) confusion matrix:
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.7\linewidth]{confusionMat.jpg}  
+	\label{fig:sub-first}
+\end{figure}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\linewidth]{helper.png}  
+	\label{fig:sub-first}
+\end{figure}
+\newpage
+(3) plot of classification error:
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.8\linewidth]{error.jpg}  
+	\label{fig:sub-first}
+\end{figure}
 
-
+\newpage
 \section*{Exercise 3}
 
 \end{document}

@@ -1,44 +1,67 @@
-function [err_classification, mat_confusion] = Exercise2(d_max)
+function [err, d_opt, confusion_mat] = Exercise2(d_max)
 %EXERCISE2 Summary of this function goes here
 %   Detailed explanation goes here
 %% %% Training %% %%
 %% load data
 trainImg = loadMNISTImages('train-images.idx3-ubyte');
 train_labels = loadMNISTLabels('train-labels.idx1-ubyte');
-%% substract mean of the images from all images
-trainImg_centered = center_image(trainImg);
+testImg = loadMNISTImages('t10k-images.idx3-ubyte');
+test_labels = loadMNISTLabels('t10k-labels.idx1-ubyte');
+likelihood = zeros([size(test_labels,1),10]);
+err = zeros(1,d_max);
+prediction_all = zeros(size(test_labels,1),d_max);
+
+%% substract mean of the images from training images
+trainImg_mean = mean(trainImg,2);
+trainImg_centered = trainImg - trainImg_mean;
+testImg_centered = testImg - trainImg_mean;
+
 %% apply pca
 eig_vectors = train_pca(trainImg_centered);
 for d=1:d_max
-    trainImg_projected = project_image(trainImg_centered, eig_vectors(:,1:d));
+    basis = eig_vectors(:,1:d);
+    trainImg_projected = basis.' * trainImg_centered;
+    testImg_projected = basis.' * testImg_centered;
+    for i = 0:9
+        [mu,sigma] = compute_class_moment(trainImg_projected,train_labels,i);
+        likelihood(:,i+1) = mvnpdf(testImg_projected.', mu, sigma);
+    end
     
-%%  
-
-%% %% Testing %% %%
-%% load data
-testImg = loadMNISTImages('t10k-images.idx3-ubyte');
-test_labels = loadMNISTLabels('t10k-labels.idx1-ubyte');
-%% substract mean of the images from all images
-testImg_centered = center_image(test_images);
+    %% Maximum likelihood classifier
+    [~,prediction] = max(likelihood.');
+    prediction = (prediction-1).';
+    prediction_all(:,d) = prediction;
+    err(d) = mean(prediction~=test_labels)*100;
+end
 %% 
-end
+[err_min,d_opt] = min(err);
+fprintf('The optimized number of principal components is %d with classification error %.3f %%.\n', ...
+        d_opt, err_min);
+prediction = prediction_all(:,d_opt);
+confusion_mat = confusionmat(test_labels,prediction);
+confusionchart(confusion_mat);
+helperDisplayConfusionMatrix(confusion_mat);
+plot(1:d_max,err);
+title('Classification Error Plot');
+xlabel('number of principle components d');
+ylabel('classification error (%)');
+%fprintf('The classification error of 15 principal components is %.3f %%.\n', err(15));
 end
 
 
-%%
-function img_centered = center_image(img)
-img_centered = img-mean(img,2);
-end
 
-%%
+%% Function to compute eigen vectors
 function eig_vectors = train_pca(img)
-mat_covariance = cov(img.');
-[V, D] = eig(mat_covariance);
+covariance = cov(img.');
+[V, D] = eig(covariance);
 [~,ind] = sort(diag(D),'descend');
 eig_vectors = V(:,ind);
 end
 
-%% 
-function img_projected = project_image(img,basis)
-img_projected = basis.' * img;
+%% Function to compute mean and covariance for each class
+function [mu,sigma] = compute_class_moment(img,label,i)
+    index = find(label==i);
+    img_class = img(:,index);
+    mu = (mean(img_class,2))';
+    sigma = cov(img_class.');
 end
