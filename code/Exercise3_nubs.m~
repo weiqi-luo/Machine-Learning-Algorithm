@@ -14,57 +14,56 @@ end
 %%
 function nubs_clustering(dataset, k, split_vector)
 dataset = reshape(dataset, [size(dataset,1)*size(dataset,2), size(dataset,3)]);
-clusters = mean(dataset);
-prediction = zeros(1,size(dataset,1));
-for i=1:k
-[cluster_bad, data_bad, index_bad, prediction] = compute_distortion(clusters,dataset,i);
-clusters_new = compute_new_clusters(cluster_bad, data_bad, split_vector, index_bad, prediction);
-clusters = [clusters_good; clusters_new];
+prediction = ones(size(dataset,1),1);
+clusters = zeros(k,size(dataset,2));
+distortions = zeros(k,1);
+
+clusters(1,:) = mean(dataset);
+index_bad = 1;
+for i=2:k
+[clusters_new, prediction_new, distortions_new] = ...
+    split_bad_cluster(clusters(index_bad,:), dataset(prediction==index_bad), split_vector);
+[clusters, prediction, distortions] = ...
+    update_clusters(clusters, prediction, distortions,clusters_new, prediction_new, distortions_new,index_bad,i);
+
+[~,index_bad] = max(distortions);
 end
-plot_clusters(k, prediction, dataset)
 end
 
 
-%%
-function [cluster_bad, data_bad, index_bad, prediction] = compute_distortion(clusters,dataset,i)
-square_err = zeros(size(dataset,1),i);
-distortions = zeros(1,i);
-for j=1:i
+%% 
+function [clusters_new, prediction_new, distortions_new] = split_bad_cluster(cluster_bad, data_bad, split_vector)
+clusters_temp = [cluster_bad + split_vector; cluster_bad - split_vector];
+[distortions_new,prediction_new] = compute_distortion(clusters_temp,data_bad);
+clusters_new1 = mean(data_bad(prediction_new==1,:)); 
+clusters_new2 = mean(data_bad(prediction_new==2,:));
+clusters_new = [clusters_new1;clusters_new2];
+end
+
+
+%% 
+function [distortions,prediction] = compute_distortion(clusters, dataset)
+square_err = zeros(size(dataset,1),2);
+distortions = zeros(2,1);
+for j=1:2
     cluster = clusters(j,:);
     clusters_replica = repmat(cluster,size(dataset,1),1);
     square_err(:,j) = sum((clusters_replica-dataset).^2,2);
 end
 [square_err_min, prediction] = min(square_err,[],2);
 
-for j=1:i
+for j=1:2
     distortions(j) = sum(square_err_min(prediction==j));
 end
-
-[~, index_bad] = max(distortions);
-cluster_bad = clusters(index_bad,:);
-data_bad = dataset(prediction==index_bad,:);
-end
-
-
-%% 
-function clusters_new = compute_new_clusters(cluster_bad, data_bad, split_vector)
-clusters_temp = [cluster_bad + split_vector; cluster_bad - split_vector];
-[~,~,~, prediction] = compute_distortion(clusters_temp,data_bad,2);
-clusters_new1 = mean(data_bad(prediction==1,:)); 
-clusters_new2 = mean(data_bad(prediction==2,:));
-clusters_new = [clusters_new1;clusters_new2];
 end
 
 
 %%
-function plot_clusters(k, prediction, dataset)
-color = ['b','k','r','g','m','y','c'];
-figure
-hold on
-for j=1:k
-    dataset_cluster = dataset(prediction==j,:);
-    scatter(dataset_cluster(:,1),dataset_cluster(:,2),strcat(color(j),'*'));
+function [clusters, prediction, distortions] = ...
+    update_clusters(clusters, prediction, distortions,clusters_new, prediction_new, distortions_new,index_bad,i)
+[clusters(index_bad,:),clusters(i,:)] = clusters_new;
+[prediction(index_bad),prediction(i)] = clusters_new;
+[clusters(index_bad,:),clusters(i,:)] = clusters_new;
+
 end
-title('nubs clustering');
-hold off
-end
+
