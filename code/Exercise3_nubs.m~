@@ -52,7 +52,6 @@ clusters_temp = [cluster_bad + split_vector; cluster_bad - split_vector];
 [~,~,~, prediction] = compute_distortion(clusters_temp,data_bad,2);
 clusters_new1 = mean(data_bad(prediction==1,:)); 
 clusters_new2 = mean(data_bad(prediction==2,:));
-
 clusters_new = [clusters_new1;clusters_new2];
 end
 

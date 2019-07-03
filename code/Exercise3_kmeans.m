@@ -1,8 +1,21 @@
-function Exercise3_kmeans(dataset, clusters, k)
+function Exercise3_kmeans(gesture_l, gesture_o, gesture_x, init_cluster_l, init_cluster_o, init_cluster_x, k)
 %EXERCISE3_KMEANS Summary of this function goes here
 %   Detailed explanation goes here
 % [dataset_all,cluster_init_all] = load_data();
+dateset_cell = {gesture_l, gesture_o, gesture_x};
+cluster_cell = {init_cluster_l, init_cluster_o, init_cluster_x};
+for i = 1:length(dateset_cell)
+clusters = cluster_cell{i};
+dataset = dateset_cell{i};
 threshold = 1e-6;
+kmeans_clustering(dataset, clusters, k, threshold);
+end
+end
+
+
+%% 
+function kmeans_clustering(dataset, clusters, k, threshold)
+dataset = reshape(dataset,[size(dataset,1)*size(dataset,2), size(dataset,3)]);
 distortion = inf;
 delta_distortion = inf;
 [~,prediction] = E_step(k,clusters,dataset);
@@ -51,6 +64,7 @@ for j=1:k
     dataset_cluster = dataset(index_cluster,:);
     scatter(dataset_cluster(:,1),dataset_cluster(:,2),strcat(color(j),'*'));
 end
+title('kmeans clustering');
 hold off
 end
 

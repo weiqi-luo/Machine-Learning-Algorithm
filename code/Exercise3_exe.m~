@@ -1,0 +1,12 @@
+load ('gesture_dataset.mat');
+dateset_cell = {gesture_l, gesture_o, gesture_x};
+cluster_cell = {init_cluster_l, init_cluster_o, init_cluster_x}
+cluster_init_all = zeros([size(init_cluster_l),3]);
+cluster_init_all(:,:,1) = ;
+cluster_init_all(:,:,2) = ;
+cluster_init_all(:,:,3) = ;
+for i = 1:length(dateset_cell)
+clusters = cluster_init_all{i};
+dataset = dateset_cell{i};
+Exercise3_kmeans(dataset, clusters, 7);
+end
