@@ -22,24 +22,29 @@ clusters(1,:) = mean(dataset);
 index_bad = 1;
 for i=2:k
 [clusters_new, prediction_new, distortions_new] = ...
-    split_bad_cluster(clusters(index_bad,:), dataset(prediction==index_bad), split_vector);
+    split_bad_cluster(clusters(index_bad,:), dataset(prediction==index_bad,:), split_vector, index_bad, i);
 
 clusters([index_bad,i],:) = clusters_new;
-prediction(index_bad) = prediction_new;
+prediction(prediction==index_bad) = prediction_new;
 distortions([index_bad,i]) = distortions_new;
 
 [~,index_bad] = max(distortions);
 end
+plot_clusters(k, prediction, dataset)
 end
 
 
 %% 
-function [clusters_new, prediction_new, distortions_new] = split_bad_cluster(cluster_bad, data_bad, split_vector)
+function [clusters_new, prediction_new, distortions_new] = ...
+    split_bad_cluster(cluster_bad, data_bad, split_vector, index_bad, i)
 clusters_temp = [cluster_bad + split_vector; cluster_bad - split_vector];
-[distortions_new,prediction_new] = compute_distortion(clusters_temp,data_bad);
-clusters_new1 = mean(data_bad(prediction_new==1,:)); 
-clusters_new2 = mean(data_bad(prediction_new==2,:));
+[distortions_new,prediction_temp] = compute_distortion(clusters_temp,data_bad);
+clusters_new1 = mean(data_bad(prediction_temp==1,:)); 
+clusters_new2 = mean(data_bad(prediction_temp==2,:));
 clusters_new = [clusters_new1;clusters_new2];
+prediction_new = zeros(size(prediction_temp));
+prediction_new(prediction_temp==1) = index_bad;
+prediction_new(prediction_temp==2) = i;
 end
 
 
@@ -60,3 +65,15 @@ end
 end
 
 
+%%
+function plot_clusters(k, prediction, dataset)
+color = ['b','k','r','g','m','y','c'];
+figure
+hold on
+for j=1:k
+    dataset_cluster = dataset(prediction==j,:);
+    scatter3(dataset_cluster(:,1),dataset_cluster(:,2),dataset_cluster(:,3),strcat(color(j),'*'));
+    title('nubs clustering');
+end
+hold off
+end

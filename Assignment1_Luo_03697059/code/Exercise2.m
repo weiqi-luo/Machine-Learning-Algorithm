@@ -1,4 +1,4 @@
-function [err, d_opt, confusion_mat] = Exercise2(d_max)
+function [d_opt, err, confusion_mat] = Exercise2(d_max)
 %EXERCISE2 Summary of this function goes here
 %   Detailed explanation goes here
 %% %% Training %% %%
@@ -35,17 +35,24 @@ for d=1:d_max
 end
 %% 
 [err_min,d_opt] = min(err);
-fprintf('The optimized number of principal components is %d with classification error %.3f %%.\n', ...
-        d_opt, err_min);
 prediction = prediction_all(:,d_opt);
 confusion_mat = confusionmat(test_labels,prediction);
+
+figure;
 confusionchart(confusion_mat);
-helperDisplayConfusionMatrix(confusion_mat);
+
+figure;
 plot(1:d_max,err);
 title('Classification Error Plot');
 xlabel('number of principle components d');
 ylabel('classification error (%)');
+
 %fprintf('The classification error of 15 principal components is %.3f %%.\n', err(15));
+fprintf('The optimized number of principal components is %d with classification error %.3f %%.\n', ...
+        d_opt, err_min);
+disp("The confusion matrix is:")
+disp(confusion_mat)
+helperDisplayConfusionMatrix(confusion_mat);
 end
 
 

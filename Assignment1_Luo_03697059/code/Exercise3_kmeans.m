@@ -62,7 +62,7 @@ hold on
 for j=1:k
     index_cluster = find(prediction==j);
     dataset_cluster = dataset(index_cluster,:);
-    scatter(dataset_cluster(:,1),dataset_cluster(:,2),strcat(color(j),'*'));
+    scatter3(dataset_cluster(:,1),dataset_cluster(:,2),dataset_cluster(:,3),strcat(color(j),'*'));
 end
 title('kmeans clustering');
 hold off

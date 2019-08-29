@@ -31,6 +31,18 @@ end
 %% Linear regression with whole dataset
 par = linear_regression(Input,Output,p1,p2);
 save('params','par')
+
+Simulate_robot(0,0.05)
+Simulate_robot(1,0)
+Simulate_robot(1,0.05)
+Simulate_robot(-1,-0.05)
+
+fprintf('For k= %d the optimal values p1 = %d and p2 = %d.\n', ...
+        k, p1, p2);
+disp("The learned parameter is:")
+disp(par{1})
+disp(par{2})
+disp(par{3})
 end
 
 %% function split_dataset
