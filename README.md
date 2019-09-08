@@ -1,6 +1,6 @@
 # Machine Learning Basics
 
-This is a coursework in the lecture Machine Learning in Robotics, which solves several toy problems with machine learning algorithm in Matlab.
+This is a coursework in the lecture Machine Learning in Robotics, in which I solved several toy problems with machine learning algorithm in Matlab.
 
 ## Part 1
 ### 1.1 Estimating velocity motion model of a mobile robot through linear regression
