@@ -1,4 +1,7 @@
-# Machine Learning 
+# Machine Learning Basics
+
+This is a coursework in the lecture Machine Learning in Robotics, which solves several toy problems with machine learning algorithm in Matlab.
+
 ## Part 1
 ### 1.1 Estimating velocity motion model of a mobile robot through linear regression
 
@@ -27,7 +30,7 @@ The handwritten digits classification problem is solved in following steps:
 
 ### 1.3 Human motion clustering
 
-In Learning by Demonstration (LbD) problem, Gaussian Mixture Models (GMM) is widely used to encode demonstrated trajectory, the parameters of which are estimated using Expectation Maximization (EM) algorithm. 
+In Learning by Demonstration (LbD), Gaussian Mixture Models (GMM) is widely used to encode demonstrated trajectory, the parameters of which are estimated using Expectation Maximization (EM) algorithm. 
 
 Typically, unsupervised clustering algorithms are use to determine the initial parameters for EM algorithm. Here I implemented two typical clustering algorithm:
 
