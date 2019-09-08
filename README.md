@@ -75,7 +75,7 @@ The likelihood is determined through forward procedure, which reaches high  comp
 
 ### 2.3 Learning gait pattern for a humanoid robot using Reinforcement Learning
 
-The aim of the task is to control a mobile robot so that it moves forward with a reasonable walking pattern without the help of Matlab toolbox. Two sub-tasks are implemented:
+The aim of the task is to control a mobile robot so that it moves forward with a reasonable walking pattern. Two sub-tasks are solved:
 
 - Assume full knowledge of the Markov decision process (MDP), apply policy iteration to learn the optimal policy.
 
