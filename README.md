@@ -70,7 +70,7 @@ The aim of the task is to control a robot so that it moves forward with a reason
 
 - Policy Iteration: By modeling the MDP, the optimal policy was obtained by the standard policy iteration. 
 
-- Q-Learning: The policy is determined from the learned Q-function, for all states and actions.
+- Q-Learning: The policy is determined from the learned Q-function.
 
   <p align="center">
       <img src="pics/policy_3.jpg", width="500">
